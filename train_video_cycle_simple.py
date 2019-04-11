@@ -46,8 +46,10 @@ from utils import Logger, AverageMeter, mkdir_p, savefig
 
 import models.dataset.vlog_train as vlog
 
+from tqdm import tqdm
+
 params = {}
-params['filelist'] = '/nfs.yoda/xiaolonw/vlog/vlog_frames_12fps.txt'
+params['filelist'] = 'data/vlog/vlog_frames_12fps.txt'
 params['imgSize'] = 256
 params['imgSize2'] = 320
 params['cropSize'] = 240
@@ -80,7 +82,7 @@ parser.add_argument('--momentum', default=0.5, type=float, metavar='M',
 parser.add_argument('--weight-decay', '--wd', default=0.0, type=float,
                     metavar='W', help='weight decay (default: 1e-4)')
 # Checkpoints
-parser.add_argument('-c', '--checkpoint', default='/scratch/xiaolonw/pytorch_checkpoints/CycleTime/', type=str, metavar='PATH',
+parser.add_argument('-c', '--checkpoint', default='checkpoints/tmp', type=str, metavar='PATH',
                     help='path to save checkpoint (default: checkpoint)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -269,7 +271,7 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, args):
 
     end = time.time()
 
-    for batch_idx, (imgs, img, patch2, theta, meta) in enumerate(train_loader):
+    for batch_idx, (imgs, img, patch2, theta, meta) in enumerate(tqdm(train_loader)):
         # measure data loading time
         data_time.update(time.time() - end)
         optimizer.zero_grad()
@@ -319,7 +321,7 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, args):
 
         loss.backward()
 
-        torch.nn.utils.clip_grad_norm(model.parameters(), 10.0)
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 10.0)
 
         optimizer.step()
 

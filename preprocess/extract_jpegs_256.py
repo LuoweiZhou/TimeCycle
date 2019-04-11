@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import uuid
+from tqdm import tqdm
 
 from joblib import delayed
 from joblib import Parallel
@@ -13,9 +14,9 @@ import pandas as pd
 
 
 
-folder_path = 'YOUR_DATASET_FOLDER/vlog_256/'
-output_path = 'YOUR_DATASET_FOLDER/vlog_frames_12fps/'
-file_src = 'YOUR_DATASET_FOLDER/manifest.txt'
+folder_path = '../data/vlog/vlog_256/'
+output_path = '../data/vlog/vlog_frames_12fps/'
+file_src = '../data/vlog/manifest.txt'
 
 
 file_list = []
@@ -67,4 +68,4 @@ def download_clip_wrapper(row):
 
 # if __name__ == '__main__':
 
-status_lst = Parallel(n_jobs=10)(delayed(download_clip_wrapper)(row) for row in file_list)
+status_lst = Parallel(n_jobs=10)(delayed(download_clip_wrapper)(row) for row in tqdm(file_list))

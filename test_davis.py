@@ -35,9 +35,10 @@ from scipy.ndimage.morphology import binary_dilation,generate_binary_structure
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+from tqdm import tqdm
 
 params = {}
-params['filelist'] = '/nfs.yoda/xiaolonw/davis/DAVIS/vallist.txt'
+params['filelist'] = 'data/davis/DAVIS/vallist.txt'
 # params['batchSize'] = 24
 params['imgSize'] = 320
 params['cropSize'] = 320
@@ -79,7 +80,7 @@ parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
 parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
                     metavar='W', help='weight decay (default: 1e-4)')
 # Checkpoints
-parser.add_argument('-c', '--checkpoint', default='/scratch/xiaolonw/pytorch_checkpoints/unsup3dnl_single_contrast', type=str, metavar='PATH',
+parser.add_argument('-c', '--checkpoint', default='checkpoints/tmp', type=str, metavar='PATH',
                     help='path to save checkpoint (default: checkpoint)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -248,7 +249,7 @@ def test(val_loader, model, epoch, use_cuda):
     end = time.time()
 
     # bar = Bar('Processing', max=len(val_loader))
-    for batch_idx, (imgs_total, patch2_total, lbls, meta) in enumerate(val_loader):
+    for batch_idx, (imgs_total, patch2_total, lbls, meta) in enumerate(tqdm(val_loader)):
 
         finput_num_ori = params['videoLen']
         finput_num     = finput_num_ori
@@ -375,7 +376,8 @@ def test(val_loader, model, epoch, use_cuda):
             scipy.misc.imsave(imname, nowlbl)
 
 
-        now_batch_size = 4
+        # now_batch_size = 4
+        now_batch_size = 1 # we use one gpu for eval
 
         imgs_stack = []
         patch2_stack = []
@@ -396,7 +398,7 @@ def test(val_loader, model, epoch, use_cuda):
 
         for iter in range(0, im_num, now_batch_size):
 
-            print(iter)
+            # print(iter)
 
             startid = iter
             endid   = iter + now_batch_size
@@ -477,6 +479,8 @@ def test(val_loader, model, epoch, use_cuda):
                 h, w = h.flatten(), w.flatten()
 
                 hh, ww = vis_ids_h[t].flatten(), vis_ids_w[t].flatten()
+                hh, ww = hh.astype('int'), ww.astype('int')
+                # hh, ww = np.round(hh).astype('int'), np.round(ww).astype('int')
 
                 if t == 0:
                     lbl = lbls_resize2[0, hh, ww, :]

@@ -10,10 +10,11 @@ import uuid
 from joblib import delayed
 from joblib import Parallel
 import pandas as pd
+from tqdm import tqdm
 
-file_src = 'YOUR_DATASET_FOLDER/manifest.txt'
-folder_path = 'YOUR_DATASET_FOLDER/vlog/'
-output_path = 'YOUR_DATASET_FOLDER/vlog_256/'
+file_src = '../data/vlog/manifest.txt'
+folder_path = '../data/vlog/vlog'
+output_path = '../data/vlog/vlog_256'
 
 
 file_list = []
@@ -66,4 +67,4 @@ def download_clip_wrapper(row):
     return downloaded
 
 
-status_lst = Parallel(n_jobs=15)(delayed(download_clip_wrapper)(row) for row in file_list)
+status_lst = Parallel(n_jobs=15)(delayed(download_clip_wrapper)(row) for row in tqdm(file_list))

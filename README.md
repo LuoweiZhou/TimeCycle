@@ -18,6 +18,12 @@ If you use our code in your research or wish to refer to the baseline results, p
 }
 ```
 
+
+## Requirements
+PyTorch 1.0
+Others: pandas, scikit-image, imageio, scipy, cv2
+
+
 ## Model and Result
 <p float="left">
   <img src="figures/1.gif" width="33%" />

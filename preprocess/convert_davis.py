@@ -9,9 +9,9 @@ jpglist = []
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('-o', '--out_folder', default='/scratch/xiaolonw/davis_results/', type=str)
-parser.add_argument('-i', '--in_folder', default='/scratch/xiaolonw/davis_results_mask_sep/', type=str)
-parser.add_argument('-d', '--dataset', default='/scratch/xiaolonw/davis/', type=str)
+parser.add_argument('-o', '--out_folder', default='results/davis_results/', type=str)
+parser.add_argument('-i', '--in_folder', default='results/davis_results_mask_sep/', type=str)
+parser.add_argument('-d', '--dataset', default='data/davis/', type=str)
 
 args = parser.parse_args()
 
@@ -51,7 +51,8 @@ for i in range(len(jpglist)):
     outfolder = out_folder + fname + '/'
 
     if not os.path.exists(outfolder):
-        os.mkdir(outfolder, 0755 )
+        # os.mkdir(outfolder, 0755)
+        os.mkdir(outfolder)
 
     files = os.listdir(gtfolder)
 
