@@ -42,7 +42,7 @@ params['filelist'] = 'data/davis/DAVIS/vallist.txt'
 # params['batchSize'] = 24
 params['imgSize'] = 320
 params['cropSize'] = 320
-params['cropSize2'] = 80
+params['cropSize2'] = 80 # not needed for testing?
 params['videoLen'] = 8
 params['offset'] = 0
 params['sideEdge'] = 80
@@ -154,7 +154,7 @@ params['sideEdge'] = state['cropSize2']
 
 
 # Use CUDA
-os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
+# os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
 use_cuda = torch.cuda.is_available()
 
 print(args.gpu_id)
@@ -458,7 +458,7 @@ def test(val_loader, model, epoch, use_cuda):
             ids = np.argpartition(atten1d, -topk_vis, axis=1)[:, -topk_vis:]
             # ids = np.argsort(atten1d, axis=1)[:, -topk_vis:]
 
-            hid = ids / width_dim
+            hid = ids // width_dim
             wid = ids % width_dim
 
             vis_ids_h = wid.transpose(0, 2, 3, 1)
@@ -479,8 +479,6 @@ def test(val_loader, model, epoch, use_cuda):
                 h, w = h.flatten(), w.flatten()
 
                 hh, ww = vis_ids_h[t].flatten(), vis_ids_w[t].flatten()
-                hh, ww = hh.astype('int'), ww.astype('int')
-                # hh, ww = np.round(hh).astype('int'), np.round(ww).astype('int')
 
                 if t == 0:
                     lbl = lbls_resize2[0, hh, ww, :]

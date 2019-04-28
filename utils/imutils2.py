@@ -7,6 +7,9 @@ import scipy.misc
 import cv2
 from . import misc
 
+# https://stackoverflow.com/questions/54013846/pytorch-dataloader-stucked-if-using-opencv-resize-method
+cv2.setNumThreads(0)
+
 def im_to_numpy(img):
     img = misc.to_numpy(img)
     img = np.transpose(img, (1, 2, 0)) # H*W*C

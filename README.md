@@ -21,7 +21,8 @@ If you use our code in your research or wish to refer to the baseline results, p
 
 ## Requirements
 PyTorch 1.0
-Others: pandas, scikit-image, imageio, scipy, cv2
+
+Others: pandas, scikit-image, imageio, scipy, cv2, prettytable
 
 
 ## Model and Result

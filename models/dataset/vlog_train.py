@@ -121,6 +121,7 @@ class VlogSet(data.Dataset):
         crop_offset_y = -1
         ratio = random.random() * (4/3 - 3/4) + 3/4
         # reading video
+
         for i in range(self.videoLen):
 
             nowid = int(startframe + i * frame_gap)
